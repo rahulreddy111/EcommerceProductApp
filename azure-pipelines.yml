@@ -9,7 +9,7 @@ trigger:
       - main
 
 pool:
-  name: FirstAgent
+  name: AzureSelfHostedAgent
 
 steps:
 - task: Maven@3
