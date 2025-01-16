@@ -13,7 +13,7 @@ pool:
 
 variables:
   mavenOptions: '-Xmx3072m'  # Properly formatted Maven options
-  javaHome: 'C:\\Program Files\\Java\\jdk-11.0.4'  # Correct path to Java Home (exclude the 'lib' subdirectory)
+  javaHome: 'C:\\Program Files\\Java\\jdk-18'  # Correct path to Java Home (exclude the 'lib' subdirectory)
 
 steps:
 # Step 1: Check out the code
