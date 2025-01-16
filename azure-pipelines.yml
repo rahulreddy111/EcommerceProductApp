@@ -4,21 +4,29 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/java
 
 trigger:
- branches:
-   include: 
-      - main
+  branches:
+    include: 
+      - main  # Triggers the pipeline when there's a commit to the 'main' branch
 
 pool:
-  name: AzureSelfHostedAgent
+  name: AzureSelfHostedAgent  # Ensure this matches the name of your self-hosted agent pool
+
+variables:
+  mavenOptions: '-Xmx3072m'  # Properly formatted Maven options
+  javaHome: 'C:\\Program Files\\Java\\jdk-11.0.4'  # Correct path to Java Home (exclude the 'lib' subdirectory)
 
 steps:
-- task: Maven@3
+# Step 1: Check out the code
+- checkout: self
+
+# Step 2: Build the project using Maven
+- task: Maven@4
+  displayName: 'Build with Maven'
   inputs:
-    mavenPomFile: 'pom.xml'
-    mavenOptions: '-Xmx3072m'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.11'
-    jdkArchitectureOption: 'x64'
-    publishJUnitResults: true
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    goals: 'package'
+    mavenPomFile: 'pom.xml'  # Path to the Maven POM file
+    mavenOptions: '$(mavenOptions)'  # Use the Maven options variable
+    javaHomeOption: 'Path'  # Specify that you're providing a custom Java home path
+    jdkDirectory: '$(javaHome)'  # Use the Java Home variable
+    publishJUnitResults: true  # Publish test results
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'  # Path to JUnit test results
+    goals: 'clean install'  # Maven goals to execute
